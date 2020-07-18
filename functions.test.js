@@ -2,6 +2,22 @@ const functions = require('./functions');
 
 // CHEc
 describe('Functions', () => {
+    beforeAll(() => {
+        console.log('Database Initialised...');
+    });
+
+    beforeEach(() => {
+        console.log('Database clear...');
+    });
+
+    afterAll(() => {
+        console.log('Database Closed...');
+    });
+
+    afterEach(() => {
+        console.log('Database fill...');
+    })
+
     it('should Add 2 + 2 to equal 4', () => {
         // Jest Matcher - toBe - looks for a particular primitive value
         expect(functions.add(2, 2)).toBe(4);
@@ -61,13 +77,14 @@ describe('Functions', () => {
 });
 
 describe('Working with async data', () => {
-    xit('should fetch a user with the name of Leanne Graham', () => {
-        expect.assertions(1);
-        return functions.fetchUser()
-            .then(data => {
-                expect(data.name).toEqual('Leanne Graham');
-            });
-    });
+    // Promise
+    // it('should fetch a user with the name of Leanne Graham', () => {
+    //     expect.assertions(1);
+    //     return functions.fetchUser()
+    //         .then(data => {
+    //             expect(data.name).toEqual('Leanne Graham');
+    //         });
+    // });
 
     // Async Await
     it('should fetch a user with the name of Leanne Graham', async () => {
