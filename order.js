@@ -1,6 +1,12 @@
 // passing fetch inside of this function is a technique
 // called Dependancy Injection
 
+/**
+ * @author isaac.babalola
+ * @date 02/07/2020
+ * @param {*} fetch 
+ * @param {*} order 
+ */
 const orderTotal = async (fetch, order) => {   
     if (!order.userId) {
         throw new Error('UserId unspecified');
