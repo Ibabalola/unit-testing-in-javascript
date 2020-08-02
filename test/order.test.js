@@ -1,11 +1,14 @@
 const orderTotal = require('../src/order');
-const emptyFunction = () => {
-    return Promise.resolve({
-        json: () => Promise.resolve({})
-    });
-};
 
 describe('Order Total', () => {
+    let fakeFunction;
+
+    beforeEach(() => {
+        fakeFunction = jest.fn().mockReturnValue(Promise.resolve({
+            json: () => Promise.resolve({})
+        }));
+    });
+
     it('should return a total of 6', async () => {
         const someOrder = {
             userId: 1,
@@ -14,9 +17,10 @@ describe('Order Total', () => {
             ]
         };
 
-        const result = await orderTotal(emptyFunction, someOrder);
+        const result = await orderTotal(fakeFunction, someOrder);
 
         expect(result).toBe(6);
+        expect(fakeFunction).toHaveBeenCalledWith('https://jsonplaceholder.typicode.com/todos/1');
     });
 
     it('should return a total of 3', async () => {
@@ -27,7 +31,7 @@ describe('Order Total', () => {
             ]
         };
 
-        const result = await orderTotal(emptyFunction, someOrder);
+        const result = await orderTotal(fakeFunction, someOrder);
 
         expect(result).toBe(3);
     });
@@ -41,7 +45,7 @@ describe('Order Total', () => {
             ]
         };
 
-        const result = await orderTotal(emptyFunction, someOrder);
+        const result = await orderTotal(fakeFunction, someOrder);
 
         expect(result).toBe(808);
     });
@@ -55,27 +59,28 @@ describe('Order Total', () => {
             ]
         };
 
-        const result = await orderTotal(emptyFunction, someOrder);
+        const result = await orderTotal(fakeFunction, someOrder);
 
         expect(result).toBe(60);
     });
-})
+});
 
 describe('API calls', () => {
-    it('should make an API call', async () => {
-        let isFakeFetchCalled = false;
-        const fakeFetch = url => {
-            expect(url).toBe('https://jsonplaceholder.typicode.com/todos/1');
-            isFakeFetchCalled = true;
-            return Promise.resolve({
+    let fakeFetch;
+
+    beforeEach(() => {
+        fakeFetch = jest.fn().mockReturnValue(
+            Promise.resolve({
                 json: () => Promise.resolve({
                     id: 1,
                     title: 'this is a title',
                     rate: 5
                 })
-            });
-        }
+            })
+        );
+    });
 
+    it('should make an API call', async () => {
         const someOrder = {
             userId: 1,
             items: [
@@ -84,15 +89,12 @@ describe('API calls', () => {
         };
 
         const result = await orderTotal(fakeFetch, someOrder);
-        expect(isFakeFetchCalled).toBe(true);
+        expect(fakeFetch).toHaveBeenCalled();
+        expect(fakeFetch).toHaveBeenCalledWith('https://jsonplaceholder.typicode.com/todos/1');
         expect(result).toEqual(30);
     });
 
     it('should reject if userId does not exists', async () => {
-        let isFakeFetchCalled = false;
-        const fakeFetch = url => {
-            isFakeFetchCalled = true
-        }
 
         const someOrder = {
             items: [
@@ -101,7 +103,7 @@ describe('API calls', () => {
         };
 
         await expect(orderTotal(fakeFetch, someOrder)).rejects.toThrow('UserId unspecified');
-        expect(isFakeFetchCalled).toBe(false);
+        expect(fakeFetch).not.toHaveBeenCalled();
     });
 
 });
