@@ -1,4 +1,4 @@
-const functions = require('./functions');
+const functions = require('../src/functions');
 
 // CHEc
 describe('Functions', () => {

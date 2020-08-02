@@ -1,4 +1,4 @@
-const isAnagram = require('./anagram');
+const isAnagram = require('../src/anagram');
 
 describe('isAnagram', () => {
     it('isAnagram function exists', () => {

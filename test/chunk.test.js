@@ -1,4 +1,4 @@
-const chunkArray = require('./chunk');
+const chunkArray = require('../src/chunk');
 
 describe('chunk array', () => {
     it('should exist', () => {

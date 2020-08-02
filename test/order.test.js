@@ -1,4 +1,4 @@
-const orderTotal = require('./order');
+const orderTotal = require('../src/order');
 const emptyFunction = () => {
     return Promise.resolve({
         json: () => Promise.resolve({})
